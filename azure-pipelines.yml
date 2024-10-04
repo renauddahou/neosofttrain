@@ -30,10 +30,26 @@ steps:
   inputs:
     script: |
       echo Test code quality
-      python flake8.py
+      python -m flake8 app.py
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
   
+- task: CmdLine@2
+  displayName: 'Build Docker images'
+  inputs:
+    script: |
+      echo Build Docker images
+      sudo docker build -t flasapp .
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
+  continueOnError: false
+- task: CmdLine@2
+  displayName: 'Test container'
+  inputs:
+    script: |
+      echo Test container
+      sudo docker run --rm -p 8000:8000 flasapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
+  continueOnError: false
 
 - task: ArchiveFiles@2
   inputs:

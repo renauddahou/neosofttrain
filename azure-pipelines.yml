@@ -39,7 +39,7 @@ steps:
   inputs:
     script: |
       echo Build Docker images
-      docker build -t flasapp .
+      docker build -t flaskapp .
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 - task: CmdLine@2
@@ -49,6 +49,15 @@ steps:
       echo Test container
       docker run --rm -p 8000:8000 flasapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
+  continueOnError: false
+
+- task: CmdLine@2
+  displayName: 'save docker images'
+  inputs:
+    script: |
+      echo Test container
+      docker save flaskapp > flaskapp.tar
+    workingDirectory: '$(Build.BinariesDirectory)'
   continueOnError: false
 
 - task: ArchiveFiles@2

@@ -47,7 +47,7 @@ steps:
   inputs:
     script: |
       echo Test container
-      docker run --rm -p 8000:8000 flasapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
+      docker run --rm -p 8000:8000 flaskapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 

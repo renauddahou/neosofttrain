@@ -24,5 +24,17 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: CmdLine@2
+  displayName: 'Achives file'
+  inputs:
+    script: 'zip -r app.zip ./*'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  continueOnError: false
 
 

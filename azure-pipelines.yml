@@ -39,7 +39,7 @@ steps:
   inputs:
     script: |
       echo Build Docker images
-      sudo docker build -t flasapp .
+      docker build -t flasapp .
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 - task: CmdLine@2
@@ -47,7 +47,7 @@ steps:
   inputs:
     script: |
       echo Test container
-      sudo docker run --rm -p 8000:8000 flasapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
+      docker run --rm -p 8000:8000 flasapp bash -c "python3 app.py & sleep 2 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 

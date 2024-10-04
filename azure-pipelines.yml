@@ -53,20 +53,28 @@ steps:
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 
+- task: PowerShell@2
+  displayName: 'Generate Version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $buildId = "$(Build.BuildId)"
+      $date = Get-Date -Format "yyyyMMdd"
+      $version = "1.0.$date.$buildId"
+      Write-Host "##vso[task.setvariable variable=BuildVersion]$version"
+      Write-Host "Generated version: $version"
+
 - task: CmdLine@2
   displayName: 'save docker images'
   inputs:
     script: |
-      echo Test container
-      docker save flaskapp > flaskapp.tar
+      echo "Saving Docker image with version $(BuildVersion)"
+      docker save flaskapp:$(BuildVersion) > flaskapp_$(BuildVersion).tar
     workingDirectory: '$(Build.BinariesDirectory)'
-  continueOnError: false
-
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifact'
   inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)/flaskapp.tar'
-    ArtifactName: 'flaskapp'
+    PathtoPublish: '$(Build.BinariesDirectory)/flaskapp_$(BuildVersion).tar'
+    ArtifactName: 'flaskapp_$(BuildVersion)'
     publishLocation: 'Container'
-  continueOnError: false

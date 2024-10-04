@@ -30,6 +30,7 @@ steps:
   inputs:
     script: |
       echo Test code quality
+      python -m pip install yapf flake8
       python -m yapf -i app.py
       python -m flake8 app.py
     workingDirectory: '$(Build.ArtifactStagingDirectory)'

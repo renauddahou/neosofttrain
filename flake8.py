@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 # Exécute la commande"flake8" pour vérifier la qualité du code
-result = subprocess.run(["flake8"])
+result = subprocess.run(["sudo apt install flake8 -y && flake8"])
 
 # Si la commande retourne un code d'erreur, affiche un message d'erreur
 # et annule le commit

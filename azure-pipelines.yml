@@ -30,7 +30,7 @@ steps:
   inputs:
     script: |
       echo Test code quality
-      python3 flake8.py
+      python flake8.py
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
   

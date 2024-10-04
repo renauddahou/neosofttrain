@@ -28,7 +28,7 @@ def hello():
         return render_template('hello.html', name=name)
     else:
         print(
-            'Request for hello page received with no name or blank name -- redirecting'
+            'Request for hello page'
         )
         return redirect(url_for('index'))
 

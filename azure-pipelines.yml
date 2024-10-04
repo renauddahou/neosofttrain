@@ -19,6 +19,18 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
+
+- task: PowerShell@2
+  displayName: 'Generate Version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $buildId = "$(Build.BuildId)"
+      $date = Get-Date -Format "yyyyMMdd"
+      $version = "1.0.$date.$buildId"
+      Write-Host "##vso[task.setvariable variable=BuildVersion]$version"
+      Write-Host "Generated version: $version"
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
@@ -41,7 +53,7 @@ steps:
   inputs:
     script: |
       echo Build Docker images
-      docker build -t flaskapp .
+      docker build -t flaskapp:$(BuildVersion) .
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 - task: CmdLine@2
@@ -53,16 +65,6 @@ steps:
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 
-- task: PowerShell@2
-  displayName: 'Generate Version'
-  inputs:
-    targetType: 'inline'
-    script: |
-      $buildId = "$(Build.BuildId)"
-      $date = Get-Date -Format "yyyyMMdd"
-      $version = "1.0.$date.$buildId"
-      Write-Host "##vso[task.setvariable variable=BuildVersion]$version"
-      Write-Host "Generated version: $version"
 
 - task: CmdLine@2
   displayName: 'save docker images'

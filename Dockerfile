@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY app.py flake8.py requirements.txt /app/
+COPY app.py requirements.txt /app/
 ADD templates /app/templates
 ADD static /app/static
 

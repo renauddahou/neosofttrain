@@ -1,36 +1,50 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default
 
-resources:
-  containers:
-    - container: pythoncontainer
-      image: python:3.9  # Utiliser une image Python pour le build et les tests
 
-jobs:
-# Job 1: Build et tests dans un conteneur Docker
-- job: BuildAndTestInDocker
-  displayName: 'Build and Test Python Application in Docker'
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
 
-  container: pythoncontainer  # Exécuter ce job dans un conteneur Docker
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
 
-  steps:
-    - checkout: self  # Récupérer le code source
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-    # Étape 1 : Installation des dépendances
-    - script: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-      displayName: 'Install Python Dependencies'
+- task: CmdLine@2
+  displayName: 'Test code quality'
+  inputs:
+    script: |
+      echo Test code quality
+      python3 flake8.py
+  continueOnError: false
 
-    # Étape 2 : Exécuter les tests et générer un artefact
-    - script: |
-        pytest --junitxml=test-results.xml
-      displayName: 'Run Unit Tests and Generate Test Report'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/application.zip'
+    replaceExistingArchive: true
 
-    # Étape 3 : Sauvegarder les résultats des tests pour les transférer à l'agent par défaut
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: './test-results.xml'  # Chemin vers le fichier généré dans le conteneur
-        artifact: 'testResults'           # Nom de l'artefact à publier
-        publishLocation: 'pipeline'       # Publie dans le pipeline pour l'étape suivante
-
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Myapp'
+    publishLocation: 'Container'
+  continueOnError: false

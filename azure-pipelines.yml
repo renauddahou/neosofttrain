@@ -27,7 +27,7 @@ steps:
 - task: CmdLine@2
   displayName: 'Achives file'
   inputs:
-    script: 'zip -r app.zip ./*'
+    script: 'sudo apt-get install zip -y && zip -r app.zip ./*'
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifact'

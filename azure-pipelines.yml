@@ -9,8 +9,6 @@ trigger:
 pool:
   name: Default
 
-variables:
-  CustomSourceFolder: '$(agent.builddirectory)/MyCustomFolder'
 
 steps:
 - script: echo Hello, world!
@@ -23,7 +21,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(CustomSourceFolder)'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 

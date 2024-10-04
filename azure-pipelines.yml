@@ -24,11 +24,14 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: CmdLine@2
-  displayName: 'Achives file'
+
+- task: ArchiveFiles@2
   inputs:
-    script: 'sudo apt-get install zip -y && zip -r app.zip ./*'
-    workingDirectory: '$(Build.ArtifactStagingDirectory)'
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifact'
   inputs:

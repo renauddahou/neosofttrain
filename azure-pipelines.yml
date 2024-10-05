@@ -78,5 +78,5 @@ steps:
   displayName: 'Publish artifact'
   inputs:
     PathtoPublish: '$(Build.BinariesDirectory)/flaskapp_$(BuildVersion).tar'
-    ArtifactName: 'flaskapp_$(BuildVersion)'
+    ArtifactName: 'flaskapp'
     publishLocation: 'Container'

@@ -64,13 +64,7 @@ steps:
       docker run --rm -p 8000:8000 flaskapp bash -c "python3 app.py & sleep 3 && curl -X POST -d 'name=Renaud' http://localhost:5000/hello"
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
-    replaceExistingArchive: true
+
 
 
 - task: CmdLine@2

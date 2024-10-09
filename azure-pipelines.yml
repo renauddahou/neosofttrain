@@ -70,4 +70,4 @@ steps:
     script: |
       echo Write your commands here
       
-      az webapp deploy --name testyflask --resource-group renaudgroup --src-path "$(Build.ArtifactStagingDirectory)"
+      az webapp deploy --name testyflask --resource-group renaudgroup --src-path "C:\Users\ASUS STRIX\Downloads\agent\_work\1\a\"

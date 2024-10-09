@@ -65,26 +65,9 @@ steps:
     workingDirectory: '$(Build.ArtifactStagingDirectory)'
   continueOnError: false
 
-
-- task: CmdLine@2
-  displayName: 'save docker images'
-  inputs:
-    script: |
-      echo "Saving Docker image with version $(BuildVersion)"
-      docker save flaskapp:$(BuildVersion) > flaskapp_$(BuildVersion).tar
-    workingDirectory: '$(Build.BinariesDirectory)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifact'
-  inputs:
-    PathtoPublish: '$(Build.BinariesDirectory)/flaskapp_$(BuildVersion).tar'
-    ArtifactName: 'flaskapp'
-    publishLocation: 'Container'
-
-
 - task: CmdLine@2
   inputs:
     script: |
       echo Write your commands here
       
-      az webapp deploy -–name testyflask -–resource-group renaudgroup -–src-path $(Build.ArtifactStagingDirectory)/*
+      az webapp deploy --name testyflask --resource-group renaudgroup --src-path $(Build.ArtifactStagingDirectory)/*
